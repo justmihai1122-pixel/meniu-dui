@@ -2,55 +2,21 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <style>
-        /* Fundalul paginii trebuie să fie 100% transparent */
-        html, body {
-            background-color: rgba(0, 0, 0, 0) !important;
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center; /* Centrează orizontal */
-            align-items: center;    /* Centrează vertical */
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        /* Containerul meniului - doar acesta va fi vizibil */
-        #menu-container {
-            width: 400px;
-            height: 500px;
-            background-color: #121212;
-            border: 2px solid #8934eb;
-            border-radius: 12px;
-            color: white;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-            text-align: center;
-            position: relative;
-        }
-
-        .header {
-            background-color: #8934eb;
-            padding: 15px;
-            font-weight: bold;
-            font-size: 1.2em;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-
-        .content {
-            padding: 20px;
-        }
-
-        .footer {
-            position: absolute;
-            bottom: 10px;
-            width: 100%;
-            font-size: 0.8em;
-            color: #666;
-        }
-    </style>
+<style>
+    html, body {
+        background-color: transparent !important;
+        background: none !important;
+        appearance: none;
+    }
+    /* Asigură-te că containerul tău are o poziție fixă */
+    #menu-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+    }
+</style>
 </head>
 <body>
     <div id="menu-container">
