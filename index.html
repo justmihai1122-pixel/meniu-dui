@@ -2,24 +2,21 @@
 <html>
 <head>
     <style>
-        body {
+        html, body {
+            background-color: rgba(0, 0, 0, 0) !important; /* Transparenta totala */
+            width: 100%;
+            height: 100%;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0); /* Fundal transparent */
-            font-family: Arial, sans-serif;
+            overflow: hidden; /* Previne scrollbar-urile care pot strica randarea */
         }
+        
         #menu-container {
-            width: 400px;
-            height: 500px;
-            background: #1a1a1a;
-            border: 2px solid #8934eb; /* Culoarea accentului Macho */
-            color: white;
-            border-radius: 8px;
-            text-align: center;
+            /* Asigura-te ca containerul are o pozitie fixa pe ecran */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
         .header {
             background: #8934eb;
