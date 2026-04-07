@@ -1,35 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="ro">
 <head>
+    <meta charset="UTF-8">
     <style>
-        /* FOARTE IMPORTANT: Corpul paginii trebuie să fie invizibil */
+        /* Fundalul paginii trebuie să fie 100% transparent */
         html, body {
             background-color: rgba(0, 0, 0, 0) !important;
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: center; /* Centrează orizontal */
+            align-items: center;    /* Centrează vertical */
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        /* Containerul meniului - doar acesta va fi vizibil */
         #menu-container {
             width: 400px;
             height: 500px;
-            background: #1a1a1a; /* Doar meniul are culoare */
+            background-color: #121212;
             border: 2px solid #8934eb;
+            border-radius: 12px;
             color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            position: relative;
+        }
+
+        .header {
+            background-color: #8934eb;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 1.2em;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            font-size: 0.8em;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div id="menu-container">
-        <h2 style="background: #8934eb; margin: 0; padding: 10px;">MACHO DUI</h2>
-        <p>Meniul este activ!</p>
+        <div class="header">MACHO DUI MENU</div>
+        <div class="content">
+            <p>Meniul a fost încărcat cu succes!</p>
+            <p style="color: #8934eb;">Status: Online</p>
+            <br>
+            <p>Apasă <strong>DELETE</strong> pentru a închide.</p>
+        </div>
+        <div class="footer">v1.0.0 - Screenshot Proof</div>
     </div>
+
+    <script>
+        // Ascultă mesajele din Lua
+        window.addEventListener("message", function(event) {
+            try {
+                let data = JSON.parse(event.data);
+                if (data.action === "open") {
+                    console.log("Meniul a primit semnalul de deschidere.");
+                }
+            } catch (e) {
+                console.error("Eroare la procesarea mesajului din Lua");
+            }
+        });
+    </script>
 </body>
 </html>
