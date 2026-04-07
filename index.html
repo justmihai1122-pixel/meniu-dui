@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0); /* Fundal transparent */
+            font-family: Arial, sans-serif;
+        }
+        #menu-container {
+            width: 400px;
+            height: 500px;
+            background: #1a1a1a;
+            border: 2px solid #8934eb; /* Culoarea accentului Macho */
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .header {
+            background: #8934eb;
+            padding: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="menu-container">
+        <div class="header">MACHO DUI MENU</div>
+        <p>Apasă INSERT pentru a închide.</p>
+    </div>
+
+    <script>
+        // Ascultăm mesajele trimise prin MachoSendDuiMessage
+        window.addEventListener("message", function(event) {
+            let data = JSON.parse(event.data);
+            if (data.action === "open") {
+                console.log("Meniul a fost deschis!");
+            }
+        });
+    </script>
+</body>
+</html>
