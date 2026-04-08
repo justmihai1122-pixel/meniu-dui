@@ -2,111 +2,181 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <title>Macho Clara Menu</title>
+    <title>Macho Menu Clara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-        body { background: transparent; overflow: hidden; height: 100vh; display: flex; align-items: center; padding-left: 100px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { 
+            background: transparent; 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+        }
 
         #menu-container {
-            width: 450px; height: 620px;
-            background: rgba(15, 15, 15, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex; flex-direction: column;
+            width: 420px;
+            background: #0f0f0f;
+            border-radius: 12px;
+            border: 1px solid #1a1a1a;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-            color: #ccc;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
 
-        .header-logo {
-            padding: 20px; background: rgba(0, 0, 0, 0.5);
-            text-align: right; color: #fff; font-weight: 900;
-            font-size: 26px; text-transform: uppercase;
-            letter-spacing: 2px;
+        .header {
+            padding: 30px;
+            text-align: right;
+            background: #0f0f0f;
         }
-        .header-logo span { color: rgb(255, 215, 0); }
 
-        .tabs-nav { display: flex; background: rgba(10, 10, 10, 0.7); }
+        .header h1 {
+            color: white;
+            font-weight: 900;
+            font-size: 24px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header h1 span { color: #f2d011; }
+
+        .tabs-nav {
+            display: flex;
+            background: #141414;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
         .tab-button {
-            flex: 1; padding: 15px; border: none; background: none;
-            color: #666; font-weight: bold; font-size: 13px;
-            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: transparent;
+            color: #444;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .tab-button.active { color: #fff; background: rgba(30, 30, 30, 0.8); }
 
-        .content-area { flex: 1; padding: 25px; overflow-y: auto; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-button.active {
+            color: #fff;
+            background: #1d1d1d;
+        }
+
+        .content-area {
+            padding: 20px;
+            background: #0f0f0f;
+            min-height: 350px;
+        }
 
         .section-header {
-            font-size: 11px; font-weight: bold; color: rgba(255, 255, 255, 0.4);
-            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 15px 0 10px 5px;
         }
 
         .action-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 20px; background: rgba(25, 25, 25, 0.6);
-            border-radius: 6px; margin-bottom: 12px; border: 1px solid transparent;
-            font-size: 14px;
-        }
-        .action-row.selected {
-            background: rgba(40, 40, 40, 0.8);
-            border-color: rgba(255, 215, 0, 0.3);
-            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            background: #141414;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid transparent;
+            transition: 0.1s;
         }
 
-        .toggle-switch {
-            width: 50px; height: 26px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 13px; position: relative;
-            transition: 0.3s;
+        .action-row .label { color: #bbb; font-size: 13px; font-weight: 500; }
+        .action-row .value { color: #eee; font-size: 12px; font-weight: 700; }
+
+        /* Stilul de selectat din poza ta */
+        .action-row.selected {
+            border-color: #f2d011;
+            background: #1a1a1a;
         }
-        .toggle-switch.on { background: rgba(255, 215, 0, 0.8); }
-        .toggle-switch::after {
-            content: ""; position: absolute;
-            width: 20px; height: 20px;
-            background: #fff; border-radius: 50%;
-            top: 3px; left: 3px; transition: 0.3s;
+
+        .toggle-bg {
+            width: 44px;
+            height: 22px;
+            background: #333;
+            border-radius: 11px;
+            position: relative;
         }
-        .toggle-switch.on::after { left: 27px; background: rgb(0, 0, 0); }
+
+        .toggle-dot {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: 0.2s;
+        }
+
+        .on .toggle-bg { background: #fff; }
+        .on .toggle-dot { left: 25px; background: #000; }
 
         .footer {
-            padding: 20px; background: rgba(0, 0, 0, 0.5);
-            display: flex; justify-content: space-between;
-            font-size: 11px; color: rgba(255, 255, 255, 0.3);
-            letter-spacing: 1px; text-transform: uppercase;
+            padding: 15px 25px;
+            background: #0f0f0f;
+            border-top: 1px solid #141414;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #222;
+            font-weight: 700;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
 <div id="menu-container">
-    <div class="header-logo">Macho <span>Menu</span></div>
+    <div class="header">
+        <h1>MACHO <span>MENU</span></h1>
+    </div>
+    
     <div class="tabs-nav">
-        <div class="tab-button active">Main</div>
-        <div class="tab-button">Outfit</div>
-        <div class="tab-button">Anims</div>
-        <div class="tab-button">Misc</div>
+        <div class="tab-button active">MAIN</div>
+        <div class="tab-button">OUTFIT</div>
+        <div class="tab-button">ANIMS</div>
+        <div class="tab-button">MISC</div>
     </div>
 
     <div class="content-area">
         <div id="tab-0" class="tab-content active">
-            <div class="section-header">Quick Actions</div>
-            <div class="action-row" data-action="heal"><div class="row-label">Heal Player</div><div class="row-value">Heal</div></div>
-            <div class="action-row" data-action="armor"><div class="row-label">Armor Player</div><div class="row-value">Armor</div></div>
+            <div class="section-header">QUICK ACTIONS</div>
+            <div class="action-row" data-action="heal">
+                <div class="label">Heal Player</div>
+                <div class="value">Heal</div>
+            </div>
+            <div class="action-row" data-action="armor">
+                <div class="label">Armor Player</div>
+                <div class="value">Armor</div>
+            </div>
             
             <div class="section-header">TOGGLES</div>
-            <div class="action-row" data-action="godmode"><div class="row-label">Godmode</div><div class="toggle-switch"></div></div>
-            <div class="action-row" data-action="thermal"><div class="row-label">Thermal Vision</div><div class="toggle-switch"></div></div>
+            <div class="action-row" data-action="godmode">
+                <div class="label">Godmode</div>
+                <div class="toggle-bg"><div class="toggle-dot"></div></div>
+            </div>
+            <div class="action-row" data-action="thermal">
+                <div class="label">Thermal Vision</div>
+                <div class="toggle-bg"><div class="toggle-dot"></div></div>
+            </div>
         </div>
-        <div id="tab-1" class="tab-content"></div>
-        <div id="tab-2" class="tab-content"></div>
-        <div id="tab-3" class="tab-content"></div>
     </div>
 
     <div class="footer">
-        <div>Macho | Clara | 3.0.1</div>
+        <div>MACHO | CLARA | 3.0.1</div>
         <div>DELETE - TOGGLE</div>
     </div>
 </div>
@@ -114,64 +184,44 @@
 <script>
     let currentTab = 0;
     let currentIndex = 0;
-    const tabCount = 4;
 
     function updateUI() {
-        document.querySelectorAll('.tab-content').forEach((t, i) => t.classList.toggle('active', i === currentTab));
-        document.querySelectorAll('.tab-button').forEach((b, i) => b.classList.toggle('active', i === currentTab));
-        
         const activeTab = document.querySelector('.tab-content.active');
         const rows = activeTab.querySelectorAll('.action-row');
         
         if (currentIndex >= rows.length) currentIndex = 0;
         if (currentIndex < 0) currentIndex = rows.length - 1;
 
-        rows.forEach((row, i) => row.classList.toggle('selected', i === currentIndex));
+        rows.forEach((row, i) => {
+            row.classList.toggle('selected', i === currentIndex);
+        });
     }
 
     function sendToLua(actionName) {
         fetch(`https://kronos_grill/executeAction`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: actionName })
-        }).catch(err => console.log("Eroare NUI: " + err));
+        }).catch(() => {});
     }
 
-    function handleNavigation(keyName) {
+    function handleNavigation(key) {
         const activeTab = document.querySelector('.tab-content.active');
         const rows = activeTab.querySelectorAll('.action-row');
 
-        if (keyName === "ArrowDown") {
-            currentIndex = (currentIndex + 1) % rows.length;
-        } else if (keyName === "ArrowUp") {
-            currentIndex = (currentIndex - 1 + rows.length) % rows.length;
-        } else if (keyName === "ArrowRight") {
-            currentTab = (currentTab + 1) % tabCount;
-            currentIndex = 0;
-        } else if (keyName === "ArrowLeft") {
-            currentTab = (currentTab - 1 + tabCount) % tabCount;
-            currentIndex = 0;
-        } else if (keyName === "Enter") {
-            if (rows[currentIndex]) {
-                const action = rows[currentIndex].getAttribute('data-action');
-                if (action) {
-                    sendToLua(action);
-                    // Actualizăm și vizual comutatorul (toggle-switch) dacă există
-                    const toggle = rows[currentIndex].querySelector('.toggle-switch');
-                    if (toggle) toggle.classList.toggle('on');
-                }
-            }
+        if (key === "ArrowDown") currentIndex++;
+        else if (key === "ArrowUp") currentIndex--;
+        else if (key === "Enter") {
+            const row = rows[currentIndex];
+            const action = row.getAttribute('data-action');
+            sendToLua(action);
+            if (row.querySelector('.toggle-bg')) row.classList.toggle('on');
         }
         updateUI();
     }
 
-    window.addEventListener('message', function(event) {
-        if (event.data.type === 'keydown') {
-            handleNavigation(event.data.key);
-        }
+    window.addEventListener('message', (e) => {
+        if (e.data.type === 'keydown') handleNavigation(e.data.key);
     });
-
-    window.addEventListener('keydown', (e) => handleNavigation(e.key));
     updateUI();
 </script>
 </body>
