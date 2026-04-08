@@ -15,7 +15,6 @@
             align-items: center; 
             height: 100vh; 
             padding-right: 50px;
-            /* Performanță maximă pentru browser-ul din FiveM */
             transform: translateZ(0);
         }
 
@@ -28,13 +27,6 @@
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            /* Intrare fluidă a meniului */
-            animation: fadeInRight 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
         }
 
         .header {
@@ -51,13 +43,12 @@
             text-transform: uppercase;
         }
 
-        .header h1 span { color: #f2d011; text-shadow: 0 0 10px rgba(242, 208, 17, 0.3); }
+        .header h1 span { color: #f2d011; }
 
         .tabs-nav {
             display: flex;
             background: #121212;
             padding: 0 5px;
-            gap: 2px;
         }
 
         .tab-button {
@@ -76,6 +67,7 @@
 
         .tab-button.active {
             color: #fff;
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .tab-button.active::after {
@@ -94,6 +86,21 @@
             padding: 18px;
             min-height: 320px;
             background: #0f0f0f;
+            position: relative;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .section-header {
@@ -114,57 +121,25 @@
             border-radius: 8px;
             margin-bottom: 7px;
             border: 1px solid rgba(255,255,255,0.02);
-            /* Smooth scaling și color change */
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform, background-color, border-color;
         }
 
-        .action-row .label { color: #888; font-size: 12px; font-weight: 600; transition: color 0.15s; }
-        .action-row .value { color: #555; font-size: 10px; font-weight: 800; transition: color 0.15s; }
+        .action-row .label { color: #888; font-size: 12px; font-weight: 600; }
+        .action-row .value { color: #555; font-size: 10px; font-weight: 800; }
 
-        /* EFECTUL SMOOTH DE SELECȚIE */
         .action-row.selected {
             border-color: rgba(242, 208, 17, 0.5);
             background: rgba(242, 208, 17, 0.08);
-            transform: scale(1.03) translateX(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: scale(1.03);
         }
 
         .action-row.selected .label { color: #fff; }
         .action-row.selected .value { color: #f2d011; }
 
-        /* TOGGLE OPTIMIZAT */
-        .toggle-bg {
-            width: 36px;
-            height: 18px;
-            background: #252525;
-            border-radius: 10px;
-            position: relative;
-            transition: background 0.25s ease;
-        }
-
-        .toggle-dot {
-            width: 12px;
-            height: 12px;
-            background: #555;
-            border-radius: 50%;
-            position: absolute;
-            top: 3px;
-            left: 4px;
-            transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
+        .toggle-bg { width: 36px; height: 18px; background: #252525; border-radius: 10px; position: relative; transition: 0.2s; }
+        .toggle-dot { width: 12px; height: 12px; background: #555; border-radius: 50%; position: absolute; top: 3px; left: 4px; transition: 0.2s; }
         .on .toggle-bg { background: #f2d011; }
-        .on .toggle-dot { left: 20px; background: #000; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
-
-        .tab-content {
-            animation: contentFade 0.2s ease-out;
-        }
-
-        @keyframes contentFade {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .on .toggle-dot { left: 20px; background: #000; }
 
         .footer {
             padding: 14px 20px;
@@ -175,7 +150,6 @@
             font-size: 9px;
             color: #333;
             font-weight: 800;
-            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -186,63 +160,69 @@
         <h1>SEEK <span>MENU</span></h1>
     </div>
     
-    <div class="tabs-nav" id="tabs-nav">
+    <div class="tabs-nav">
         <div class="tab-button active">MAIN</div>
         <div class="tab-button">OUTFIT</div>
         <div class="tab-button">ANIMS</div>
         <div class="tab-button">MISC</div>
     </div>
 
-    <div class="content-area" id="content-area">
+    <div class="content-area">
         <div id="tab-0" class="tab-content active">
             <div class="section-header">QUICK ACTIONS</div>
-            <div class="action-row" data-action="heal">
-                <div class="label">Heal Player</div>
-                <div class="value">HEAL</div>
-            </div>
-            <div class="action-row" data-action="armor">
-                <div class="label">Armor Player</div>
-                <div class="value">ARMOR</div>
-            </div>
-            
+            <div class="action-row" data-action="heal"><div class="label">Heal Player</div><div class="value">HEAL</div></div>
+            <div class="action-row" data-action="armor"><div class="label">Armor Player</div><div class="value">ARMOR</div></div>
             <div class="section-header">TOGGLES</div>
-            <div class="action-row" data-action="godmode">
-                <div class="label">Godmode</div>
-                <div class="toggle-bg"><div class="toggle-dot"></div></div>
-            </div>
-            <div class="action-row" data-action="thermal">
-                <div class="label">Thermal Vision</div>
-                <div class="toggle-bg"><div class="toggle-dot"></div></div>
-            </div>
+            <div class="action-row" data-action="godmode"><div class="label">Godmode</div><div class="toggle-bg"><div class="toggle-dot"></div></div></div>
+        </div>
+
+        <div id="tab-1" class="tab-content">
+            <div class="section-header">OUTFIT CUSTOMIZATION</div>
+            <div class="action-row" data-action="mask"><div class="label">Remove Mask</div><div class="value">SET</div></div>
+            <div class="action-row" data-action="hat"><div class="label">Remove Hat</div><div class="value">SET</div></div>
+        </div>
+
+        <div id="tab-2" class="tab-content">
+            <div class="section-header">EMOTES</div>
+            <div class="action-row" data-action="dance"><div class="label">Dance</div><div class="value">PLAY</div></div>
+        </div>
+
+        <div id="tab-3" class="tab-content">
+            <div class="section-header">OTHER SETTINGS</div>
+            <div class="action-row" data-action="nightvision"><div class="label">Night Vision</div><div class="toggle-bg"><div class="toggle-dot"></div></div></div>
         </div>
     </div>
 
     <div class="footer">
         <div>SEEK | 3.0.1</div>
+        <div>STÂNGA/DREAPTA - TABS</div>
     </div>
 </div>
 
 <script>
     let currentTab = 0;
     let currentIndex = 0;
+    const totalTabs = 4;
 
     function updateUI() {
+        // Actualizăm Tab-urile
+        document.querySelectorAll('.tab-button').forEach((btn, i) => {
+            btn.classList.toggle('active', i === currentTab);
+        });
+
+        document.querySelectorAll('.tab-content').forEach((content, i) => {
+            content.classList.toggle('active', i === currentTab);
+        });
+
+        // Actualizăm selecția din interiorul tab-ului activ
         const activeTab = document.querySelector('.tab-content.active');
-        if (!activeTab) return;
-        
         const rows = activeTab.querySelectorAll('.action-row');
         
         if (currentIndex >= rows.length) currentIndex = 0;
         if (currentIndex < 0) currentIndex = rows.length - 1;
 
         rows.forEach((row, i) => {
-            if (i === currentIndex) {
-                row.classList.add('selected');
-                // Auto-scroll dacă sunt multe elemente
-                row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            } else {
-                row.classList.remove('selected');
-            }
+            row.classList.toggle('selected', i === currentIndex);
         });
     }
 
@@ -259,28 +239,29 @@
 
         if (key === "ArrowDown") {
             currentIndex++;
-            updateUI();
         } else if (key === "ArrowUp") {
             currentIndex--;
-            updateUI();
+        } else if (key === "ArrowRight") {
+            currentTab = (currentTab + 1) % totalTabs;
+            currentIndex = 0; // Resetăm selecția când schimbăm tab-ul
+        } else if (key === "ArrowLeft") {
+            currentTab = (currentTab - 1 + totalTabs) % totalTabs;
+            currentIndex = 0;
         } else if (key === "Enter") {
             const row = rows[currentIndex];
             if (row) {
-                const action = row.getAttribute('data-action');
-                sendToLua(action);
-                if (row.querySelector('.toggle-bg')) {
-                    row.classList.toggle('on');
-                }
+                sendToLua(row.getAttribute('data-action'));
+                if (row.querySelector('.toggle-bg')) row.classList.toggle('on');
             }
         }
+        updateUI();
     }
 
     window.addEventListener('message', (e) => {
         if (e.data.type === 'keydown') handleNavigation(e.data.key);
     });
 
-    // Inițializare
-    document.addEventListener('DOMContentLoaded', updateUI);
+    updateUI();
 </script>
 </body>
 </html>
