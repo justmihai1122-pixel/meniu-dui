@@ -92,7 +92,38 @@
         buttons.forEach((btn, i) => btn.classList.toggle('selected', i === currentIndex));
     }
     window.focus();
+    // Funcția care procesează tasta (mutată separat ca să o putem apela de oriunde)
+    function handleNavigation(keyName) {
+        const activeTab = document.querySelector('.tab-content.active');
+        const buttons = activeTab.querySelectorAll('.btn');
     
+        if (keyName === "ArrowDown") {
+            currentIndex = (currentIndex + 1) % buttons.length;
+        } else if (keyName === "ArrowUp") {
+            currentIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+        } else if (keyName === "ArrowRight") {
+            currentTab = (currentTab + 1) % 3;
+            currentIndex = 0;
+        } else if (keyName === "ArrowLeft") {
+            currentTab = (currentTab - 1 + 3) % 3;
+            currentIndex = 0;
+        } else if (keyName === "Enter") {
+            buttons[currentIndex].click();
+        }
+        updateUI();
+    }
+    
+    // ASCULTĂM MESAJELE VENITE DIN LUA (Prin Macho)
+    window.addEventListener('message', function(event) {
+        if (event.data.type === 'keydown') {
+            handleNavigation(event.data.key);
+        }
+    });
+    
+    // Păstrăm și ascultarea normală (pentru teste în browser)
+    window.addEventListener('keydown', function(e) {
+        handleNavigation(e.key);
+    });
     window.addEventListener('keydown', function(e) {
         const activeTab = document.querySelector('.tab-content.active');
         const buttons = activeTab.querySelectorAll('.btn');
