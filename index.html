@@ -91,7 +91,8 @@
 
         buttons.forEach((btn, i) => btn.classList.toggle('selected', i === currentIndex));
     }
-
+    window.focus();
+    
     window.addEventListener('keydown', function(e) {
         const activeTab = document.querySelector('.tab-content.active');
         const buttons = activeTab.querySelectorAll('.btn');
