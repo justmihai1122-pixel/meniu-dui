@@ -2,46 +2,141 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-<style>
-    html, body {
-        background-color: transparent !important;
-        background: none !important;
-        appearance: none;
-    }
-    /* Asigură-te că containerul tău are o poziție fixă */
-    #menu-container {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 9999;
-    }
-</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macho NUI Menu</title>
+    <style>
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
+
+        /* Containerul Principal */
+        #menu-container {
+            width: 500px;
+            height: 600px;
+            background-color: #121212;
+            border: 2px solid #8934eb;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(137, 52, 235, 0.4);
+        }
+
+        /* Header / Navbar */
+        .header {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            text-align: center;
+            color: #8934eb;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .tabs-nav {
+            display: flex;
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #8934eb;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: none;
+            color: #ccc;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        .tab-button:hover { background-color: #252525; color: #fff; }
+        .tab-button.active { border-bottom: 3px solid #8934eb; color: #8934eb; background-color: #252525; }
+
+        /* Conținut Tab-uri */
+        .content-area { flex: 1; padding: 20px; color: white; overflow-y: auto; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Butoane & Elemente */
+        .btn {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #8934eb;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn:hover { background-color: #a55cff; }
+
+    </style>
 </head>
 <body>
+
     <div id="menu-container">
-        <div class="header">MACHO DUI MENU</div>
-        <div class="content">
-            <p>Meniul a fost încărcat cu succes!</p>
-            <p style="color: #8934eb;">Status: Online</p>
-            <br>
-            <p>Apasă <strong>DELETE</strong> pentru a închide.</p>
+        <div class="header">MACHO MENU V1</div>
+        
+        <div class="tabs-nav">
+            <button class="tab-button active" onclick="openTab(event, 'main')">Principal</button>
+            <button class="tab-button" onclick="openTab(event, 'visuals')">Visuals</button>
+            <button class="tab-button" onclick="openTab(event, 'misc')">Misc</button>
+            <button class="tab-button" onclick="openTab(event, 'settings')">Setări</button>
         </div>
-        <div class="footer">v1.0.0 - Screenshot Proof</div>
+
+        <div class="content-area">
+            <div id="main" class="tab-content active">
+                <h3>Funcții Principale</h3>
+                <p style="color: #888; margin-bottom: 15px;">Bine ai venit în meniul Macho!</p>
+                <button class="btn">God Mode</button>
+                <button class="btn">Invisibility</button>
+                <button class="btn">Heal Player</button>
+            </div>
+
+            <div id="visuals" class="tab-content">
+                <h3>Visuals / ESP</h3>
+                <button class="btn">Show Players</button>
+                <button class="btn">Box ESP</button>
+                <button class="btn">Snaplines</button>
+            </div>
+
+            <div id="misc" class="tab-content">
+                <h3>Diverse</h3>
+                <button class="btn">No Recoil</button>
+                <button class="btn">Super Speed</button>
+                <button class="btn">Fly Mode</button>
+            </div>
+
+            <div id="settings" class="tab-content">
+                <h3>Setări Meniu</h3>
+                <p>Culoare Accent: <span style="color: #8934eb;">#8934eb</span></p>
+                <button class="btn" style="background-color: #d9534f;">Distruge Meniu</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Ascultă mesajele din Lua
-        window.addEventListener("message", function(event) {
-            try {
-                let data = JSON.parse(event.data);
-                if (data.action === "open") {
-                    console.log("Meniul a primit semnalul de deschidere.");
-                }
-            } catch (e) {
-                console.error("Eroare la procesarea mesajului din Lua");
+        function openTab(evt, tabName) {
+            // Ascunde toate tab-urile
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
             }
-        });
+
+            // Scoate clasa 'active' de pe toate butoanele
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            // Afișează tab-ul curent și adaugă clasa 'active' pe butonul apăsat
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
     </script>
 </body>
 </html>
