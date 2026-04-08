@@ -11,24 +11,25 @@
             background: transparent; 
             overflow: hidden; 
             display: flex; 
-            justify-content: center; 
-            align-items: center; 
+            justify-content: flex-end; /* Îl mută în dreapta */
+            align-items: center;    /* Îl centrează pe verticală (la mijloc) */
             height: 100vh; 
+            padding-right: 50px;    /* Distanța față de marginea din dreapta */
         }
 
         #menu-container {
-            width: 420px;
+            width: 320px;           /* Lățime redusă (era 420px) */
             background: #0f0f0f;
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid #1a1a1a;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
         }
 
         .header {
-            padding: 30px;
+            padding: 20px;          /* Padding redus */
             text-align: right;
             background: #0f0f0f;
         }
@@ -36,7 +37,7 @@
         .header h1 {
             color: white;
             font-weight: 900;
-            font-size: 24px;
+            font-size: 18px;        /* Font mai mic */
             letter-spacing: 1px;
             text-transform: uppercase;
         }
@@ -51,12 +52,12 @@
 
         .tab-button {
             flex: 1;
-            padding: 15px;
+            padding: 12px;
             border: none;
             background: transparent;
             color: #444;
             font-weight: 700;
-            font-size: 11px;
+            font-size: 9px;         /* Font tab-uri mai mic */
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -67,52 +68,51 @@
         }
 
         .content-area {
-            padding: 20px;
+            padding: 15px;
             background: #0f0f0f;
-            min-height: 350px;
+            min-height: 300px;      /* Înălțime minimă ajustată */
         }
 
         .section-header {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 800;
             color: #333;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin: 15px 0 10px 5px;
+            letter-spacing: 1.2px;
+            margin: 10px 0 8px 5px;
         }
 
         .action-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 20px;
+            padding: 14px 15px;     /* Rânduri mai compacte */
             background: #141414;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
             border: 1px solid transparent;
             transition: 0.1s;
         }
 
-        .action-row .label { color: #bbb; font-size: 13px; font-weight: 500; }
-        .action-row .value { color: #eee; font-size: 12px; font-weight: 700; }
+        .action-row .label { color: #bbb; font-size: 11px; font-weight: 500; }
+        .action-row .value { color: #eee; font-size: 10px; font-weight: 700; }
 
-        /* Stilul de selectat din poza ta */
         .action-row.selected {
             border-color: #f2d011;
             background: #1a1a1a;
         }
 
         .toggle-bg {
-            width: 44px;
-            height: 22px;
+            width: 36px;            /* Toggle mai mic */
+            height: 18px;
             background: #333;
-            border-radius: 11px;
+            border-radius: 9px;
             position: relative;
         }
 
         .toggle-dot {
-            width: 16px;
-            height: 16px;
+            width: 12px;
+            height: 12px;
             background: white;
             border-radius: 50%;
             position: absolute;
@@ -122,15 +122,15 @@
         }
 
         .on .toggle-bg { background: #fff; }
-        .on .toggle-dot { left: 25px; background: #000; }
+        .on .toggle-dot { left: 21px; background: #000; }
 
         .footer {
-            padding: 15px 25px;
+            padding: 12px 20px;
             background: #0f0f0f;
             border-top: 1px solid #141414;
             display: flex;
             justify-content: space-between;
-            font-size: 10px;
+            font-size: 9px;
             color: #222;
             font-weight: 700;
             text-transform: uppercase;
@@ -176,7 +176,7 @@
     </div>
 
     <div class="footer">
-        <div>MACHO | CLARA | 3.0.1</div>
+        <div>MACHO | 3.0.1</div>
         <div>DELETE - TOGGLE</div>
     </div>
 </div>
