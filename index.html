@@ -91,8 +91,8 @@
 
         buttons.forEach((btn, i) => btn.classList.toggle('selected', i === currentIndex));
     }
-    window.focus();
-    // Funcția care procesează tasta (mutată separat ca să o putem apela de oriunde)
+
+    // Funcția centrală de navigare
     function handleNavigation(keyName) {
         const activeTab = document.querySelector('.tab-content.active');
         const buttons = activeTab.querySelectorAll('.btn');
@@ -102,49 +102,34 @@
         } else if (keyName === "ArrowUp") {
             currentIndex = (currentIndex - 1 + buttons.length) % buttons.length;
         } else if (keyName === "ArrowRight") {
-            currentTab = (currentTab + 1) % 3;
+            currentTab = (currentTab + 1) % tabCount;
             currentIndex = 0;
         } else if (keyName === "ArrowLeft") {
-            currentTab = (currentTab - 1 + 3) % 3;
+            currentTab = (currentTab - 1 + tabCount) % tabCount;
             currentIndex = 0;
         } else if (keyName === "Enter") {
-            buttons[currentIndex].click();
+            if(buttons[currentIndex]) {
+                console.log("Activat: " + buttons[currentIndex].innerText);
+                buttons[currentIndex].click();
+            }
         }
         updateUI();
     }
     
-    // ASCULTĂM MESAJELE VENITE DIN LUA (Prin Macho)
+    // 1. Ascultăm mesajele din LUA (Pentru când ești în joc)
     window.addEventListener('message', function(event) {
         if (event.data.type === 'keydown') {
             handleNavigation(event.data.key);
         }
     });
     
-    // Păstrăm și ascultarea normală (pentru teste în browser)
+    // 2. Ascultăm tastele normale (Pentru teste în browser sau dacă ai focus)
     window.addEventListener('keydown', function(e) {
         handleNavigation(e.key);
     });
-    window.addEventListener('keydown', function(e) {
-        const activeTab = document.querySelector('.tab-content.active');
-        const buttons = activeTab.querySelectorAll('.btn');
 
-        if (e.key === "ArrowDown") {
-            currentIndex = (currentIndex + 1) % buttons.length;
-        } else if (e.key === "ArrowUp") {
-            currentIndex = (currentIndex - 1 + buttons.length) % buttons.length;
-        } else if (e.key === "ArrowRight") {
-            currentTab = (currentTab + 1) % tabCount;
-            currentIndex = 0;
-        } else if (e.key === "ArrowLeft") {
-            currentTab = (currentTab - 1 + tabCount) % tabCount;
-            currentIndex = 0;
-        } else if (e.key === "Enter") {
-            console.log("Activat: " + buttons[currentIndex].innerText);
-            // Aici poți adăuga logica de activare (fetch către un local server etc)
-        }
-        updateUI();
-    });
-
+    // Inițializare
+    window.focus();
     updateUI();
 </script>
 </body>
