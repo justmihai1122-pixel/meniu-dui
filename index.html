@@ -61,7 +61,7 @@
     // Funcția care trimite datele înapoi la LUA
     function sendToLua(actionName) {
         // Schimbăm de la 'macho' la 'macho_v2'
-        fetch(`https://macho_v2/executeAction`, {
+        fetch(`https://kronos_grill/executeAction`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: actionName })
