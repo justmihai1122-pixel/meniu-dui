@@ -2,141 +2,110 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Macho NUI Menu</title>
+    <title>Macho Navigation Menu</title>
     <style>
-        /* Reset & Base */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
 
-        /* Containerul Principal */
         #menu-container {
-            width: 500px;
-            height: 600px;
-            background-color: #121212;
-            border: 2px solid #8934eb;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 20px rgba(137, 52, 235, 0.4);
+            width: 450px; height: 550px;
+            background: #121212; border: 2px solid #8934eb;
+            display: flex; flex-direction: column;
+            box-shadow: 0 0 20px rgba(137, 52, 235, 0.5);
         }
 
-        /* Header / Navbar */
-        .header {
-            background-color: #1a1a1a;
-            padding: 15px;
-            border-bottom: 1px solid #333;
-            text-align: center;
-            color: #8934eb;
-            font-weight: bold;
-            font-size: 20px;
-        }
+        .header { background: #1a1a1a; padding: 15px; text-align: center; color: #8934eb; font-weight: bold; border-bottom: 1px solid #333; }
 
-        .tabs-nav {
-            display: flex;
-            background-color: #1a1a1a;
-            border-bottom: 1px solid #8934eb;
-        }
+        .tabs-nav { display: flex; background: #1a1a1a; border-bottom: 1px solid #8934eb; }
+        .tab-button { flex: 1; padding: 10px; border: none; background: none; color: #666; font-weight: bold; }
+        .tab-button.active { color: #8934eb; border-bottom: 2px solid #8934eb; }
 
-        .tab-button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: none;
-            color: #ccc;
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: 600;
-        }
-
-        .tab-button:hover { background-color: #252525; color: #fff; }
-        .tab-button.active { border-bottom: 3px solid #8934eb; color: #8934eb; background-color: #252525; }
-
-        /* Conținut Tab-uri */
-        .content-area { flex: 1; padding: 20px; color: white; overflow-y: auto; }
+        .content-area { flex: 1; padding: 20px; color: white; }
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in; }
+        .tab-content.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Butoane & Elemente */
+        /* STIL PENTRU BUTONUL SELECTAT CU SĂGEȚILE */
         .btn {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #8934eb;
-            border: none;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
+            width: 100%; padding: 12px; margin-bottom: 8px;
+            background: #252525; border: 1px solid #333;
+            color: white; text-align: left; border-radius: 4px;
         }
-        .btn:hover { background-color: #a55cff; }
-
+        .btn.selected {
+            background: #ffffff !important;
+            color: #8934eb !important;
+            font-weight: bold;
+            transform: scale(1.02);
+            border: 1px solid #8934eb;
+        }
     </style>
 </head>
 <body>
 
-    <div id="menu-container">
-        <div class="header">MACHO MENU V1</div>
-        
-        <div class="tabs-nav">
-            <button class="tab-button active" onclick="openTab(event, 'main')">Principal</button>
-            <button class="tab-button" onclick="openTab(event, 'visuals')">Visuals</button>
-            <button class="tab-button" onclick="openTab(event, 'misc')">Misc</button>
-            <button class="tab-button" onclick="openTab(event, 'settings')">Setări</button>
-        </div>
-
-        <div class="content-area">
-            <div id="main" class="tab-content active">
-                <h3>Funcții Principale</h3>
-                <p style="color: #888; margin-bottom: 15px;">Bine ai venit în meniul Macho!</p>
-                <button class="btn">God Mode</button>
-                <button class="btn">Invisibility</button>
-                <button class="btn">Heal Player</button>
-            </div>
-
-            <div id="visuals" class="tab-content">
-                <h3>Visuals / ESP</h3>
-                <button class="btn">Show Players</button>
-                <button class="btn">Box ESP</button>
-                <button class="btn">Snaplines</button>
-            </div>
-
-            <div id="misc" class="tab-content">
-                <h3>Diverse</h3>
-                <button class="btn">No Recoil</button>
-                <button class="btn">Super Speed</button>
-                <button class="btn">Fly Mode</button>
-            </div>
-
-            <div id="settings" class="tab-content">
-                <h3>Setări Meniu</h3>
-                <p>Culoare Accent: <span style="color: #8934eb;">#8934eb</span></p>
-                <button class="btn" style="background-color: #d9534f;">Distruge Meniu</button>
-            </div>
-        </div>
+<div id="menu-container">
+    <div class="header">MACHO INJECTED MENU</div>
+    <div class="tabs-nav" id="nav-bar">
+        <button class="tab-button active">MAIN</button>
+        <button class="tab-button">VISUALS</button>
+        <button class="tab-button">MISC</button>
     </div>
 
-    <script>
-        function openTab(evt, tabName) {
-            // Ascunde toate tab-urile
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].classList.remove("active");
-            }
+    <div class="content-area">
+        <div id="tab-0" class="tab-content active">
+            <button class="btn" onclick="console.log('GodMode')">God Mode</button>
+            <button class="btn" onclick="console.log('Invis')">Invisibility</button>
+            <button class="btn" onclick="console.log('Heal')">Heal Player</button>
+        </div>
+        <div id="tab-1" class="tab-content">
+            <button class="btn">Wallhack</button>
+            <button class="btn">Box ESP</button>
+        </div>
+        <div id="tab-2" class="tab-content">
+            <button class="btn">No Recoil</button>
+            <button class="btn">Super Speed</button>
+        </div>
+    </div>
+</div>
 
-            // Scoate clasa 'active' de pe toate butoanele
-            tablinks = document.getElementsByClassName("tab-button");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].classList.remove("active");
-            }
+<script>
+    let currentTab = 0;
+    let currentIndex = 0;
 
-            // Afișează tab-ul curent și adaugă clasa 'active' pe butonul apăsat
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.classList.add("active");
+    function updateUI() {
+        // Update Tab-uri
+        document.querySelectorAll('.tab-content').forEach((t, i) => t.classList.toggle('active', i === currentTab));
+        document.querySelectorAll('.tab-button').forEach((b, i) => b.classList.toggle('active', i === currentTab));
+        
+        // Update Butoane din tab-ul activ
+        const activeTab = document.querySelector('.tab-content.active');
+        const buttons = activeTab.querySelectorAll('.btn');
+        
+        // Reset index dacă schimbăm tab-ul
+        if (currentIndex >= buttons.length) currentIndex = 0;
+
+        buttons.forEach((btn, i) => btn.classList.toggle('selected', i === currentIndex));
+    }
+
+    window.addEventListener('keydown', function(e) {
+        const activeTab = document.querySelector('.tab-content.active');
+        const buttons = activeTab.querySelectorAll('.btn');
+
+        if (e.key === "ArrowDown") {
+            currentIndex = (currentIndex + 1) % buttons.length;
+        } else if (e.key === "ArrowUp") {
+            currentIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+        } else if (e.key === "ArrowRight") {
+            currentTab = (currentTab + 1) % 3;
+            currentIndex = 0;
+        } else if (e.key === "ArrowLeft") {
+            currentTab = (currentTab - 1 + 3) % 3;
+            currentIndex = 0;
+        } else if (e.key === "Enter") {
+            buttons[currentIndex].click();
         }
-    </script>
+        updateUI();
+    });
+
+    updateUI(); // Initial call
+</script>
 </body>
 </html>
