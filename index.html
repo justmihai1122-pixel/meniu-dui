@@ -2,43 +2,51 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <title>Macho Arrow Menu</title>
+    <title>Macho Elite 2026</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: transparent; overflow: hidden; display: flex; justify-content: flex-start; align-items: center; height: 100vh; padding-left: 50px; }
-        #menu-container { width: 400px; height: 500px; background: rgba(18, 18, 18, 0.95); border: 2px solid #8934eb; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(137, 52, 235, 0.6); border-radius: 5px; }
-        .header { background: #1a1a1a; padding: 15px; text-align: center; color: #8934eb; font-weight: bold; font-size: 18px; border-bottom: 1px solid #333; }
-        .tabs-nav { display: flex; background: #1a1a1a; border-bottom: 1px solid #8934eb; }
-        .tab-button { flex: 1; padding: 12px; border: none; background: none; color: #555; font-weight: bold; font-size: 12px; }
-        .tab-button.active { color: #8934eb; background: #252525; border-bottom: 3px solid #8934eb; }
-        .content-area { flex: 1; padding: 15px; color: white; }
+        #menu-container { width: 420px; height: 550px; background: rgba(10, 10, 10, 0.98); border: 1px solid #8934eb; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(0, 0, 0, 0.8); border-radius: 8px; position: relative; }
+        #menu-container::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, #8934eb, #34ebeb); border-radius: 8px 8px 0 0; }
+        .header { padding: 20px; text-align: left; color: #fff; font-weight: 800; font-size: 22px; letter-spacing: 1px; }
+        .header span { color: #8934eb; }
+        .tabs-nav { display: flex; background: #151515; padding: 0 10px; }
+        .tab-button { flex: 1; padding: 15px; border: none; background: none; color: #666; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; cursor: pointer; }
+        .tab-button.active { color: #8934eb; border-bottom: 2px solid #8934eb; }
+        .content-area { flex: 1; padding: 20px; overflow-y: auto; background: #0d0d0d; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .btn { width: 100%; padding: 12px; margin-bottom: 8px; background: #222; border: 1px solid #333; color: #eee; text-align: left; border-radius: 3px; font-size: 14px; }
-        .btn.selected { background: #ffffff !important; color: #8934eb !important; font-weight: bold; border: 1px solid #8934eb; transform: translateX(5px); }
+        .btn { width: 100%; padding: 14px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #252525; color: #aaa; text-align: left; border-radius: 4px; font-size: 13px; transition: 0.2s; position: relative; }
+        .btn.selected { background: #8934eb; color: #fff; border-color: #a361f0; transform: scale(1.02); box-shadow: 0 4px 15px rgba(137, 52, 235, 0.3); }
+        .btn.selected::after { content: ">"; position: absolute; right: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div id="menu-container">
-    <div class="header">MACHO MENU</div>
+    <div class="header">MACHO<span>ELITE</span></div>
     <div class="tabs-nav">
-        <div class="tab-button active" id="btn-tab-0">MAIN</div>
-        <div class="tab-button" id="btn-tab-1">VISUALS</div>
-        <div class="tab-button" id="btn-tab-2">MISC</div>
+        <div class="tab-button active">Player</div>
+        <div class="tab-button">Visuals</div>
+        <div class="tab-button">Vehicle</div>
     </div>
 
     <div class="content-area">
         <div id="tab-0" class="tab-content active">
-            <button class="btn" data-action="heal">Heal Player</button>
-            <button class="btn" data-action="armor">Armor Max</button>
-            <button class="btn" data-action="revive">Revive Self</button>
+            <button class="btn" data-action="heal">Heal & Clean</button>
+            <button class="btn" data-action="armor">Vest Max</button>
+            <button class="btn" data-action="revive">Fast Revive</button>
+            <button class="btn" data-action="suicide">Suicide</button>
         </div>
         <div id="tab-1" class="tab-content">
-            <button class="btn" data-action="esp">Toggle ESP</button>
+            <button class="btn" data-action="nightvision">Night Vision</button>
+            <button class="btn" data-action="thermal">Thermal Vision</button>
+            <button class="btn" data-action="cleararea">Clear Area (Peds)</button>
         </div>
         <div id="tab-2" class="tab-content">
-            <button class="btn" data-action="kill_engine">Kill Engine</button>
+            <button class="btn" data-action="fix_veh">Repair Engine</button>
+            <button class="btn" data-action="wash_veh">Wash Vehicle</button>
+            <button class="btn" data-action="flip_veh">Flip Vehicle</button>
         </div>
     </div>
 </div>
@@ -58,16 +66,12 @@
         buttons.forEach((btn, i) => btn.classList.toggle('selected', i === currentIndex));
     }
 
-    // Funcția care trimite datele înapoi la LUA
     function sendToLua(actionName) {
-        // Schimbăm de la 'macho' la 'macho_v2'
         fetch(`https://kronos_grill/executeAction`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: actionName })
-        })
-        .then(resp => resp.json())
-        .catch(err => console.log("Eroare NUI Callback: " + err));
+        }).catch(err => {});
     }
 
     function handleNavigation(keyName) {
@@ -87,7 +91,6 @@
     window.addEventListener('message', function(event) {
         if (event.data.type === 'keydown') handleNavigation(event.data.key);
     });
-
     window.addEventListener('keydown', (e) => handleNavigation(e.key));
     updateUI();
 </script>
