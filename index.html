@@ -5,135 +5,177 @@
     <title>SEEK MENU</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
         
         body { 
             background: transparent; 
             overflow: hidden; 
             display: flex; 
-            justify-content: flex-end; /* Îl mută în dreapta */
-            align-items: center;    /* Îl centrează pe verticală (la mijloc) */
+            justify-content: flex-end; 
+            align-items: center; 
             height: 100vh; 
-            padding-right: 50px;    /* Distanța față de marginea din dreapta */
+            padding-right: 50px;
+            /* Performanță maximă pentru browser-ul din FiveM */
+            transform: translateZ(0);
         }
 
         #menu-container {
-            width: 320px;           /* Lățime redusă (era 420px) */
-            background: #0f0f0f;
-            border-radius: 10px;
-            border: 1px solid #1a1a1a;
+            width: 310px;
+            background: rgba(15, 15, 15, 0.98);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            /* Intrare fluidă a meniului */
+            animation: fadeInRight 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .header {
-            padding: 20px;          /* Padding redus */
+            padding: 22px;
             text-align: right;
-            background: #0f0f0f;
+            background: linear-gradient(to bottom, rgba(20,20,20,1), rgba(15,15,15,1));
         }
 
         .header h1 {
             color: white;
             font-weight: 900;
-            font-size: 18px;        /* Font mai mic */
-            letter-spacing: 1px;
+            font-size: 19px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
         }
 
-        .header h1 span { color: #f2d011; }
+        .header h1 span { color: #f2d011; text-shadow: 0 0 10px rgba(242, 208, 17, 0.3); }
 
         .tabs-nav {
             display: flex;
-            background: #141414;
-            border-bottom: 1px solid #1a1a1a;
+            background: #121212;
+            padding: 0 5px;
+            gap: 2px;
         }
 
         .tab-button {
             flex: 1;
-            padding: 12px;
+            padding: 14px 0;
             border: none;
             background: transparent;
             color: #444;
-            font-weight: 700;
-            font-size: 9px;         /* Font tab-uri mai mic */
+            font-weight: 800;
+            font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            transition: all 0.2s ease;
+            position: relative;
         }
 
         .tab-button.active {
             color: #fff;
-            background: #1d1d1d;
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 2px;
+            background: #f2d011;
+            box-shadow: 0 0 8px #f2d011;
         }
 
         .content-area {
-            padding: 15px;
+            padding: 18px;
+            min-height: 320px;
             background: #0f0f0f;
-            min-height: 300px;      /* Înălțime minimă ajustată */
         }
 
         .section-header {
             font-size: 9px;
-            font-weight: 800;
-            color: #333;
+            font-weight: 900;
+            color: #3a3a3a;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin: 10px 0 8px 5px;
+            letter-spacing: 1.5px;
+            margin: 15px 0 10px 5px;
         }
 
         .action-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 15px;     /* Rânduri mai compacte */
-            background: #141414;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            border: 1px solid transparent;
-            transition: 0.1s;
+            padding: 13px 16px;
+            background: rgba(22, 22, 22, 0.6);
+            border-radius: 8px;
+            margin-bottom: 7px;
+            border: 1px solid rgba(255,255,255,0.02);
+            /* Smooth scaling și color change */
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, background-color, border-color;
         }
 
-        .action-row .label { color: #bbb; font-size: 11px; font-weight: 500; }
-        .action-row .value { color: #eee; font-size: 10px; font-weight: 700; }
+        .action-row .label { color: #888; font-size: 12px; font-weight: 600; transition: color 0.15s; }
+        .action-row .value { color: #555; font-size: 10px; font-weight: 800; transition: color 0.15s; }
 
+        /* EFECTUL SMOOTH DE SELECȚIE */
         .action-row.selected {
-            border-color: #f2d011;
-            background: #1a1a1a;
+            border-color: rgba(242, 208, 17, 0.5);
+            background: rgba(242, 208, 17, 0.08);
+            transform: scale(1.03) translateX(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
+        .action-row.selected .label { color: #fff; }
+        .action-row.selected .value { color: #f2d011; }
+
+        /* TOGGLE OPTIMIZAT */
         .toggle-bg {
-            width: 36px;            /* Toggle mai mic */
+            width: 36px;
             height: 18px;
-            background: #333;
-            border-radius: 9px;
+            background: #252525;
+            border-radius: 10px;
             position: relative;
+            transition: background 0.25s ease;
         }
 
         .toggle-dot {
             width: 12px;
             height: 12px;
-            background: white;
+            background: #555;
             border-radius: 50%;
             position: absolute;
             top: 3px;
-            left: 3px;
-            transition: 0.2s;
+            left: 4px;
+            transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        .on .toggle-bg { background: #fff; }
-        .on .toggle-dot { left: 21px; background: #000; }
+        .on .toggle-bg { background: #f2d011; }
+        .on .toggle-dot { left: 20px; background: #000; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+
+        .tab-content {
+            animation: contentFade 0.2s ease-out;
+        }
+
+        @keyframes contentFade {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         .footer {
-            padding: 12px 20px;
-            background: #0f0f0f;
-            border-top: 1px solid #141414;
+            padding: 14px 20px;
+            background: #0c0c0c;
+            border-top: 1px solid rgba(255,255,255,0.03);
             display: flex;
             justify-content: space-between;
             font-size: 9px;
-            color: #222;
-            font-weight: 700;
-            text-transform: uppercase;
+            color: #333;
+            font-weight: 800;
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -144,23 +186,23 @@
         <h1>SEEK <span>MENU</span></h1>
     </div>
     
-    <div class="tabs-nav">
+    <div class="tabs-nav" id="tabs-nav">
         <div class="tab-button active">MAIN</div>
         <div class="tab-button">OUTFIT</div>
         <div class="tab-button">ANIMS</div>
         <div class="tab-button">MISC</div>
     </div>
 
-    <div class="content-area">
+    <div class="content-area" id="content-area">
         <div id="tab-0" class="tab-content active">
             <div class="section-header">QUICK ACTIONS</div>
             <div class="action-row" data-action="heal">
                 <div class="label">Heal Player</div>
-                <div class="value">Heal</div>
+                <div class="value">HEAL</div>
             </div>
             <div class="action-row" data-action="armor">
                 <div class="label">Armor Player</div>
-                <div class="value">Armor</div>
+                <div class="value">ARMOR</div>
             </div>
             
             <div class="section-header">TOGGLES</div>
@@ -186,13 +228,21 @@
 
     function updateUI() {
         const activeTab = document.querySelector('.tab-content.active');
+        if (!activeTab) return;
+        
         const rows = activeTab.querySelectorAll('.action-row');
         
         if (currentIndex >= rows.length) currentIndex = 0;
         if (currentIndex < 0) currentIndex = rows.length - 1;
 
         rows.forEach((row, i) => {
-            row.classList.toggle('selected', i === currentIndex);
+            if (i === currentIndex) {
+                row.classList.add('selected');
+                // Auto-scroll dacă sunt multe elemente
+                row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                row.classList.remove('selected');
+            }
         });
     }
 
@@ -207,21 +257,30 @@
         const activeTab = document.querySelector('.tab-content.active');
         const rows = activeTab.querySelectorAll('.action-row');
 
-        if (key === "ArrowDown") currentIndex++;
-        else if (key === "ArrowUp") currentIndex--;
-        else if (key === "Enter") {
+        if (key === "ArrowDown") {
+            currentIndex++;
+            updateUI();
+        } else if (key === "ArrowUp") {
+            currentIndex--;
+            updateUI();
+        } else if (key === "Enter") {
             const row = rows[currentIndex];
-            const action = row.getAttribute('data-action');
-            sendToLua(action);
-            if (row.querySelector('.toggle-bg')) row.classList.toggle('on');
+            if (row) {
+                const action = row.getAttribute('data-action');
+                sendToLua(action);
+                if (row.querySelector('.toggle-bg')) {
+                    row.classList.toggle('on');
+                }
+            }
         }
-        updateUI();
     }
 
     window.addEventListener('message', (e) => {
         if (e.data.type === 'keydown') handleNavigation(e.data.key);
     });
-    updateUI();
+
+    // Inițializare
+    document.addEventListener('DOMContentLoaded', updateUI);
 </script>
 </body>
 </html>
