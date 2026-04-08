@@ -60,11 +60,14 @@
 
     // Funcția care trimite datele înapoi la LUA
     function sendToLua(actionName) {
-        fetch(`https://macho/executeAction`, {
+        // Schimbăm de la 'macho' la 'macho_v2'
+        fetch(`https://macho_v2/executeAction`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: actionName })
-        }).catch(err => console.log("Eroare NUI Callback: " + err));
+        })
+        .then(resp => resp.json())
+        .catch(err => console.log("Eroare NUI Callback: " + err));
     }
 
     function handleNavigation(keyName) {
