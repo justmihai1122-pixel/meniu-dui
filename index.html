@@ -45,10 +45,12 @@
 
         .header h1 span { color: #f2d011; }
 
+        /* NAVIGARE TAB-URI CENTRATĂ */
         .tabs-nav {
             display: flex;
             background: #121212;
             padding: 0 5px;
+            justify-content: space-around;
         }
 
         .tab-button {
@@ -63,28 +65,23 @@
             letter-spacing: 1px;
             transition: all 0.2s ease;
             position: relative;
-            
-            /* CENTRARE TEXT */
             display: flex;
-            justify-content: center; /* Centrare orizontală */
-            align-items: center;     /* Centrare verticală */
+            justify-content: center;
+            align-items: center;
         }
-        
+
         .tab-button.active {
             color: #fff;
             background: rgba(255, 255, 255, 0.02);
         }
-        
+
         .tab-button.active::after {
             content: '';
             position: absolute;
             bottom: 0;
-            
-            /* CENTRARE LINIE */
             left: 50%;
             transform: translateX(-50%);
-            
-            width: 60%; /* Poți ajusta cât de lungă să fie linia aici */
+            width: 60%;
             height: 3px;
             background: #f2d011;
             box-shadow: 0 0 10px rgba(242, 208, 17, 0.5);
@@ -130,20 +127,49 @@
             border-radius: 8px;
             margin-bottom: 7px;
             border: 1px solid rgba(255,255,255,0.02);
-            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.1s ease-in-out;
         }
 
-        .action-row .label { color: #888; font-size: 12px; font-weight: 600; }
+        .action-row .label { 
+            color: #888; 
+            font-size: 12px; 
+            font-weight: 600; 
+            display: flex;
+            align-items: center;
+        }
+        
         .action-row .value { color: #555; font-size: 10px; font-weight: 800; }
 
         .action-row.selected {
             border-color: rgba(242, 208, 17, 0.5);
             background: rgba(242, 208, 17, 0.08);
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
 
         .action-row.selected .label { color: #fff; }
         .action-row.selected .value { color: #f2d011; }
+
+        /* STIL KEYBIND */
+        .keybind-tag {
+            font-size: 8px;
+            background: #1a1a1a;
+            color: #f2d011;
+            padding: 2px 5px;
+            border-radius: 4px;
+            margin-left: 8px;
+            border: 1px solid #333;
+            text-transform: uppercase;
+        }
+
+        .binding-active {
+            background: #f2d011;
+            color: #000;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0.4; }
+        }
 
         .toggle-bg { width: 36px; height: 18px; background: #252525; border-radius: 10px; position: relative; transition: 0.2s; }
         .toggle-dot { width: 12px; height: 12px; background: #555; border-radius: 50%; position: absolute; top: 3px; left: 4px; transition: 0.2s; }
@@ -179,32 +205,31 @@
     <div class="content-area">
         <div id="tab-0" class="tab-content active">
             <div class="section-header">QUICK ACTIONS</div>
-            <div class="action-row" data-action="heal"><div class="label">Heal Player</div><div class="value">HEAL</div></div>
-            <div class="action-row" data-action="armor"><div class="label">Armor Player</div><div class="value">ARMOR</div></div>
+            <div class="action-row" data-action="heal"><div class="label">Heal Player <span class="kb"></span></div><div class="value">HEAL</div></div>
+            <div class="action-row" data-action="armor"><div class="label">Armor Player <span class="kb"></span></div><div class="value">ARMOR</div></div>
             <div class="section-header">TOGGLES</div>
-            <div class="action-row" data-action="godmode"><div class="label">Godmode</div><div class="toggle-bg"><div class="toggle-dot"></div></div></div>
+            <div class="action-row" data-action="godmode"><div class="label">Godmode <span class="kb"></span></div><div class="toggle-bg"><div class="toggle-dot"></div></div></div>
         </div>
 
         <div id="tab-1" class="tab-content">
-            <div class="section-header">OUTFIT CUSTOMIZATION</div>
-            <div class="action-row" data-action="mask"><div class="label">Remove Mask</div><div class="value">SET</div></div>
-            <div class="action-row" data-action="hat"><div class="label">Remove Hat</div><div class="value">SET</div></div>
+            <div class="section-header">OUTFIT</div>
+            <div class="action-row" data-action="mask"><div class="label">Mask <span class="kb"></span></div><div class="value">SET</div></div>
         </div>
 
         <div id="tab-2" class="tab-content">
             <div class="section-header">EMOTES</div>
-            <div class="action-row" data-action="dance"><div class="label">Dance</div><div class="value">PLAY</div></div>
+            <div class="action-row" data-action="dance"><div class="label">Dance <span class="kb"></span></div><div class="value">PLAY</div></div>
         </div>
 
         <div id="tab-3" class="tab-content">
-            <div class="section-header">OTHER SETTINGS</div>
-            <div class="action-row" data-action="nightvision"><div class="label">Night Vision</div><div class="toggle-bg"><div class="toggle-dot"></div></div></div>
+            <div class="section-header">MISC</div>
+            <div class="action-row" data-action="nightvision"><div class="label">Night Vision <span class="kb"></span></div><div class="toggle-bg"><div class="toggle-dot"></div></div></div>
         </div>
     </div>
 
     <div class="footer">
         <div>SEEK | 3.0.1</div>
-        <div>STÂNGA/DREAPTA - TABS</div>
+        <div id="hint">F11 - SET BIND</div>
     </div>
 </div>
 
@@ -212,18 +237,18 @@
     let currentTab = 0;
     let currentIndex = 0;
     const totalTabs = 4;
+    let isBinding = false;
+    let keybinds = {}; // Format: { "heal": "F1" }
 
     function updateUI() {
-        // Actualizăm Tab-urile
-        document.querySelectorAll('.tab-button').forEach((btn, i) => {
-            btn.classList.toggle('active', i === currentTab);
-        });
+        // Tab-uri
+        const tabBtns = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabBtns.forEach((btn, i) => btn.classList.toggle('active', i === currentTab));
+        tabContents.forEach((content, i) => content.classList.toggle('active', i === currentTab));
 
-        document.querySelectorAll('.tab-content').forEach((content, i) => {
-            content.classList.toggle('active', i === currentTab);
-        });
-
-        // Actualizăm selecția din interiorul tab-ului activ
+        // Rânduri
         const activeTab = document.querySelector('.tab-content.active');
         const rows = activeTab.querySelectorAll('.action-row');
         
@@ -232,35 +257,68 @@
 
         rows.forEach((row, i) => {
             row.classList.toggle('selected', i === currentIndex);
+            
+            // Afișare Keybind existent
+            const action = row.getAttribute('data-action');
+            const kbContainer = row.querySelector('.kb');
+            
+            if (isBinding && i === currentIndex) {
+                kbContainer.innerHTML = `<span class="keybind-tag binding-active">...</span>`;
+            } else if (keybinds[action]) {
+                kbContainer.innerHTML = `<span class="keybind-tag">${keybinds[action]}</span>`;
+            } else {
+                kbContainer.innerHTML = '';
+            }
         });
     }
 
-    function sendToLua(actionName) {
+    function sendToLua(actionName, extraData = {}) {
         fetch(`https://kronos_grill/executeAction`, {
             method: 'POST',
-            body: JSON.stringify({ action: actionName })
+            body: JSON.stringify({ action: actionName, ...extraData })
         }).catch(() => {});
     }
 
     function handleNavigation(key) {
         const activeTab = document.querySelector('.tab-content.active');
         const rows = activeTab.querySelectorAll('.action-row');
+        const currentRow = rows[currentIndex];
 
+        // LOGICĂ BINDING
+        if (isBinding) {
+            if (key === "Escape") { isBinding = false; updateUI(); return; }
+            
+            const action = currentRow.getAttribute('data-action');
+            keybinds[action] = key;
+            
+            // Trimitem bind-ul la Lua ca să-l salveze
+            fetch(`https://kronos_grill/saveKeybind`, {
+                method: 'POST',
+                body: JSON.stringify({ action: action, key: key })
+            }).catch(() => {});
+
+            isBinding = false;
+            updateUI();
+            return;
+        }
+
+        // TASTE NAVIGARE
         if (key === "ArrowDown") {
             currentIndex++;
         } else if (key === "ArrowUp") {
             currentIndex--;
         } else if (key === "ArrowRight") {
             currentTab = (currentTab + 1) % totalTabs;
-            currentIndex = 0; // Resetăm selecția când schimbăm tab-ul
+            currentIndex = 0;
         } else if (key === "ArrowLeft") {
             currentTab = (currentTab - 1 + totalTabs) % totalTabs;
             currentIndex = 0;
+        } else if (key === "F11") {
+            isBinding = true;
         } else if (key === "Enter") {
-            const row = rows[currentIndex];
-            if (row) {
-                sendToLua(row.getAttribute('data-action'));
-                if (row.querySelector('.toggle-bg')) row.classList.toggle('on');
+            if (currentRow) {
+                sendToLua(currentRow.getAttribute('data-action'));
+                if (currentRow.querySelector('.toggle-bg')) currentRow.classList.toggle('on');
             }
         }
         updateUI();
