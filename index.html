@@ -2,68 +2,131 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <title>Macho Elite 2026</title>
+    <title>Macho Clara Menu</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: transparent; overflow: hidden; display: flex; justify-content: flex-start; align-items: center; height: 100vh; padding-left: 50px; }
-        #menu-container { width: 420px; height: 550px; background: rgba(10, 10, 10, 0.98); border: 1px solid #8934eb; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(0, 0, 0, 0.8); border-radius: 8px; position: relative; }
-        #menu-container::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, #8934eb, #34ebeb); border-radius: 8px 8px 0 0; }
-        .header { padding: 20px; text-align: left; color: #fff; font-weight: 800; font-size: 22px; letter-spacing: 1px; }
-        .header span { color: #8934eb; }
-        .tabs-nav { display: flex; background: #151515; padding: 0 10px; }
-        .tab-button { flex: 1; padding: 15px; border: none; background: none; color: #666; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; cursor: pointer; }
-        .tab-button.active { color: #8934eb; border-bottom: 2px solid #8934eb; }
-        .content-area { flex: 1; padding: 20px; overflow-y: auto; background: #0d0d0d; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background: transparent; overflow: hidden; height: 100vh; display: flex; align-items: center; padding-left: 100px; }
+
+        #menu-container {
+            width: 450px; height: 620px;
+            background: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            color: #ccc;
+        }
+
+        .header-logo {
+            padding: 20px; background: rgba(0, 0, 0, 0.5);
+            text-align: right; color: #fff; font-weight: 900;
+            font-size: 26px; text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .header-logo span { color: rgb(255, 215, 0); }
+
+        .tabs-nav { display: flex; background: rgba(10, 10, 10, 0.7); }
+        .tab-button {
+            flex: 1; padding: 15px; border: none; background: none;
+            color: #666; font-weight: bold; font-size: 13px;
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        }
+        .tab-button.active { color: #fff; background: rgba(30, 30, 30, 0.8); }
+
+        .content-area { flex: 1; padding: 25px; overflow-y: auto; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .btn { width: 100%; padding: 14px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #252525; color: #aaa; text-align: left; border-radius: 4px; font-size: 13px; transition: 0.2s; position: relative; }
-        .btn.selected { background: #8934eb; color: #fff; border-color: #a361f0; transform: scale(1.02); box-shadow: 0 4px 15px rgba(137, 52, 235, 0.3); }
-        .btn.selected::after { content: ">"; position: absolute; right: 15px; font-weight: bold; }
+
+        .section-header {
+            font-size: 11px; font-weight: bold; color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;
+        }
+
+        .action-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background: rgba(25, 25, 25, 0.6);
+            border-radius: 6px; margin-bottom: 12px; border: 1px solid transparent;
+            font-size: 14px;
+        }
+        .action-row.selected {
+            background: rgba(40, 40, 40, 0.8);
+            border-color: rgba(255, 215, 0, 0.3);
+            color: #fff;
+        }
+
+        .toggle-switch {
+            width: 50px; height: 26px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 13px; position: relative;
+            transition: 0.3s;
+        }
+        .toggle-switch.on { background: rgba(255, 215, 0, 0.8); }
+        .toggle-switch::after {
+            content: ""; position: absolute;
+            width: 20px; height: 20px;
+            background: #fff; border-radius: 50%;
+            top: 3px; left: 3px; transition: 0.3s;
+        }
+        .toggle-switch.on::after { left: 27px; background: rgb(0, 0, 0); }
+
+        .footer {
+            padding: 20px; background: rgba(0, 0, 0, 0.5);
+            display: flex; justify-content: space-between;
+            font-size: 11px; color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 1px; text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
 
 <div id="menu-container">
-    <div class="header">MACHO<span>ELITE</span></div>
+    <div class="header-logo">Macho <span>Menu</span></div>
     <div class="tabs-nav">
-        <div class="tab-button active">Player</div>
-        <div class="tab-button">Visuals</div>
-        <div class="tab-button">Vehicle</div>
+        <div class="tab-button active">Main</div>
+        <div class="tab-button">Outfit</div>
+        <div class="tab-button">Anims</div>
+        <div class="tab-button">Misc</div>
     </div>
 
     <div class="content-area">
         <div id="tab-0" class="tab-content active">
-            <button class="btn" data-action="heal">Heal & Clean</button>
-            <button class="btn" data-action="armor">Vest Max</button>
-            <button class="btn" data-action="revive">Fast Revive</button>
-            <button class="btn" data-action="suicide">Suicide</button>
+            <div class="section-header">Quick Actions</div>
+            <div class="action-row" data-action="heal"><div class="row-label">Heal Player</div><div class="row-value">Heal</div></div>
+            <div class="action-row" data-action="armor"><div class="row-label">Armor Player</div><div class="row-value">Armor</div></div>
+            
+            <div class="section-header">TOGGLES</div>
+            <div class="action-row" data-action="godmode"><div class="row-label">Godmode</div><div class="toggle-switch"></div></div>
+            <div class="action-row" data-action="thermal"><div class="row-label">Thermal Vision</div><div class="toggle-switch"></div></div>
         </div>
-        <div id="tab-1" class="tab-content">
-            <button class="btn" data-action="nightvision">Night Vision</button>
-            <button class="btn" data-action="thermal">Thermal Vision</button>
-            <button class="btn" data-action="cleararea">Clear Area (Peds)</button>
-        </div>
-        <div id="tab-2" class="tab-content">
-            <button class="btn" data-action="fix_veh">Repair Engine</button>
-            <button class="btn" data-action="wash_veh">Wash Vehicle</button>
-            <button class="btn" data-action="flip_veh">Flip Vehicle</button>
-        </div>
+        <div id="tab-1" class="tab-content"></div>
+        <div id="tab-2" class="tab-content"></div>
+        <div id="tab-3" class="tab-content"></div>
+    </div>
+
+    <div class="footer">
+        <div>Macho | Clara | 3.0.1</div>
+        <div>DELETE - TOGGLE</div>
     </div>
 </div>
 
 <script>
     let currentTab = 0;
     let currentIndex = 0;
-    const tabCount = 3;
+    const tabCount = 4;
 
     function updateUI() {
         document.querySelectorAll('.tab-content').forEach((t, i) => t.classList.toggle('active', i === currentTab));
         document.querySelectorAll('.tab-button').forEach((b, i) => b.classList.toggle('active', i === currentTab));
+        
         const activeTab = document.querySelector('.tab-content.active');
-        const buttons = activeTab.querySelectorAll('.btn');
-        if (currentIndex >= buttons.length) currentIndex = 0;
-        if (currentIndex < 0) currentIndex = buttons.length - 1;
-        buttons.forEach((btn, i) => btn.classList.toggle('selected', i === currentIndex));
+        const rows = activeTab.querySelectorAll('.action-row');
+        
+        if (currentIndex >= rows.length) currentIndex = 0;
+        if (currentIndex < 0) currentIndex = rows.length - 1;
+
+        rows.forEach((row, i) => row.classList.toggle('selected', i === currentIndex));
     }
 
     function sendToLua(actionName) {
@@ -71,26 +134,43 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: actionName })
-        }).catch(err => {});
+        }).catch(err => console.log("Eroare NUI: " + err));
     }
 
     function handleNavigation(keyName) {
         const activeTab = document.querySelector('.tab-content.active');
-        const buttons = activeTab.querySelectorAll('.btn');
-        if (keyName === "ArrowDown") currentIndex = (currentIndex + 1) % buttons.length;
-        else if (keyName === "ArrowUp") currentIndex = (currentIndex - 1 + buttons.length) % buttons.length;
-        else if (keyName === "ArrowRight") { currentTab = (currentTab + 1) % tabCount; currentIndex = 0; }
-        else if (keyName === "ArrowLeft") { currentTab = (currentTab - 1 + tabCount) % tabCount; currentIndex = 0; }
-        else if (keyName === "Enter") {
-            const action = buttons[currentIndex].getAttribute('data-action');
-            if (action) sendToLua(action);
+        const rows = activeTab.querySelectorAll('.action-row');
+
+        if (keyName === "ArrowDown") {
+            currentIndex = (currentIndex + 1) % rows.length;
+        } else if (keyName === "ArrowUp") {
+            currentIndex = (currentIndex - 1 + rows.length) % rows.length;
+        } else if (keyName === "ArrowRight") {
+            currentTab = (currentTab + 1) % tabCount;
+            currentIndex = 0;
+        } else if (keyName === "ArrowLeft") {
+            currentTab = (currentTab - 1 + tabCount) % tabCount;
+            currentIndex = 0;
+        } else if (keyName === "Enter") {
+            if (rows[currentIndex]) {
+                const action = rows[currentIndex].getAttribute('data-action');
+                if (action) {
+                    sendToLua(action);
+                    // Actualizăm și vizual comutatorul (toggle-switch) dacă există
+                    const toggle = rows[currentIndex].querySelector('.toggle-switch');
+                    if (toggle) toggle.classList.toggle('on');
+                }
+            }
         }
         updateUI();
     }
 
     window.addEventListener('message', function(event) {
-        if (event.data.type === 'keydown') handleNavigation(event.data.key);
+        if (event.data.type === 'keydown') {
+            handleNavigation(event.data.key);
+        }
     });
+
     window.addEventListener('keydown', (e) => handleNavigation(e.key));
     updateUI();
 </script>
