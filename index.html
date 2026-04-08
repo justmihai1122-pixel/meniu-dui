@@ -6,68 +6,39 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: transparent; overflow: hidden; display: flex; justify-content: flex-start; align-items: center; height: 100vh; padding-left: 50px; }
-
-        #menu-container {
-            width: 400px; height: 500px;
-            background: rgba(18, 18, 18, 0.95); border: 2px solid #8934eb;
-            display: flex; flex-direction: column;
-            box-shadow: 0 0 20px rgba(137, 52, 235, 0.6);
-            border-radius: 5px;
-        }
-
+        #menu-container { width: 400px; height: 500px; background: rgba(18, 18, 18, 0.95); border: 2px solid #8934eb; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(137, 52, 235, 0.6); border-radius: 5px; }
         .header { background: #1a1a1a; padding: 15px; text-align: center; color: #8934eb; font-weight: bold; font-size: 18px; border-bottom: 1px solid #333; }
-
         .tabs-nav { display: flex; background: #1a1a1a; border-bottom: 1px solid #8934eb; }
-        .tab-button { flex: 1; padding: 12px; border: none; background: none; color: #555; font-weight: bold; transition: 0.2s; font-size: 12px; }
+        .tab-button { flex: 1; padding: 12px; border: none; background: none; color: #555; font-weight: bold; font-size: 12px; }
         .tab-button.active { color: #8934eb; background: #252525; border-bottom: 3px solid #8934eb; }
-
-        .content-area { flex: 1; padding: 15px; color: white; overflow-y: auto; }
+        .content-area { flex: 1; padding: 15px; color: white; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-
-        .btn {
-            width: 100%; padding: 12px; margin-bottom: 8px;
-            background: #222; border: 1px solid #333;
-            color: #eee; text-align: left; border-radius: 3px;
-            font-size: 14px; transition: 0.1s;
-        }
-
-        /* Stilul pentru butonul selectat cu săgețile */
-        .btn.selected {
-            background: #ffffff !important;
-            color: #8934eb !important;
-            font-weight: bold;
-            border: 1px solid #8934eb;
-            transform: translateX(5px);
-        }
+        .btn { width: 100%; padding: 12px; margin-bottom: 8px; background: #222; border: 1px solid #333; color: #eee; text-align: left; border-radius: 3px; font-size: 14px; }
+        .btn.selected { background: #ffffff !important; color: #8934eb !important; font-weight: bold; border: 1px solid #8934eb; transform: translateX(5px); }
     </style>
 </head>
 <body>
 
 <div id="menu-container">
-    <div class="header">MACHO CONTROLS</div>
+    <div class="header">MACHO MENU</div>
     <div class="tabs-nav">
-        <div class="tab-button active">MAIN</div>
-        <div class="tab-button">VISUALS</div>
-        <div class="tab-button">MISC</div>
+        <div class="tab-button active" id="btn-tab-0">MAIN</div>
+        <div class="tab-button" id="btn-tab-1">VISUALS</div>
+        <div class="tab-button" id="btn-tab-2">MISC</div>
     </div>
 
     <div class="content-area">
         <div id="tab-0" class="tab-content active">
-            <button class="btn">God Mode</button>
-            <button class="btn">Invisibility</button>
-            <button class="btn">Heal Player</button>
-            <button class="btn">Armor Max</button>
+            <button class="btn" data-action="heal">Heal Player</button>
+            <button class="btn" data-action="armor">Armor Max</button>
+            <button class="btn" data-action="revive">Revive Self</button>
         </div>
         <div id="tab-1" class="tab-content">
-            <button class="btn">Player ESP</button>
-            <button class="btn">Box ESP</button>
-            <button class="btn">Lines</button>
+            <button class="btn" data-action="esp">Toggle ESP</button>
         </div>
         <div id="tab-2" class="tab-content">
-            <button class="btn">Super Jump</button>
-            <button class="btn">Fast Run</button>
-            <button class="btn">No Recoil</button>
+            <button class="btn" data-action="kill_engine">Kill Engine</button>
         </div>
     </div>
 </div>
@@ -78,58 +49,43 @@
     const tabCount = 3;
 
     function updateUI() {
-        // Update Tab-uri
         document.querySelectorAll('.tab-content').forEach((t, i) => t.classList.toggle('active', i === currentTab));
         document.querySelectorAll('.tab-button').forEach((b, i) => b.classList.toggle('active', i === currentTab));
-        
-        // Update Butoane
         const activeTab = document.querySelector('.tab-content.active');
         const buttons = activeTab.querySelectorAll('.btn');
-        
         if (currentIndex >= buttons.length) currentIndex = 0;
         if (currentIndex < 0) currentIndex = buttons.length - 1;
-
         buttons.forEach((btn, i) => btn.classList.toggle('selected', i === currentIndex));
     }
 
-    // Funcția centrală de navigare
+    // Funcția care trimite datele înapoi la LUA
+    function sendToLua(actionName) {
+        fetch(`https://macho/executeAction`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: actionName })
+        }).catch(err => console.log("Eroare NUI Callback: " + err));
+    }
+
     function handleNavigation(keyName) {
         const activeTab = document.querySelector('.tab-content.active');
         const buttons = activeTab.querySelectorAll('.btn');
-    
-        if (keyName === "ArrowDown") {
-            currentIndex = (currentIndex + 1) % buttons.length;
-        } else if (keyName === "ArrowUp") {
-            currentIndex = (currentIndex - 1 + buttons.length) % buttons.length;
-        } else if (keyName === "ArrowRight") {
-            currentTab = (currentTab + 1) % tabCount;
-            currentIndex = 0;
-        } else if (keyName === "ArrowLeft") {
-            currentTab = (currentTab - 1 + tabCount) % tabCount;
-            currentIndex = 0;
-        } else if (keyName === "Enter") {
-            if(buttons[currentIndex]) {
-                console.log("Activat: " + buttons[currentIndex].innerText);
-                buttons[currentIndex].click();
-            }
+        if (keyName === "ArrowDown") currentIndex = (currentIndex + 1) % buttons.length;
+        else if (keyName === "ArrowUp") currentIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+        else if (keyName === "ArrowRight") { currentTab = (currentTab + 1) % tabCount; currentIndex = 0; }
+        else if (keyName === "ArrowLeft") { currentTab = (currentTab - 1 + tabCount) % tabCount; currentIndex = 0; }
+        else if (keyName === "Enter") {
+            const action = buttons[currentIndex].getAttribute('data-action');
+            if (action) sendToLua(action);
         }
         updateUI();
     }
-    
-    // 1. Ascultăm mesajele din LUA (Pentru când ești în joc)
+
     window.addEventListener('message', function(event) {
-        if (event.data.type === 'keydown') {
-            handleNavigation(event.data.key);
-        }
-    });
-    
-    // 2. Ascultăm tastele normale (Pentru teste în browser sau dacă ai focus)
-    window.addEventListener('keydown', function(e) {
-        handleNavigation(e.key);
+        if (event.data.type === 'keydown') handleNavigation(event.data.key);
     });
 
-    // Inițializare
-    window.focus();
+    window.addEventListener('keydown', (e) => handleNavigation(e.key));
     updateUI();
 </script>
 </body>
